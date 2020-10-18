@@ -113,4 +113,90 @@ resource "aws_s3_bucket_object" "s3object" {
   source = "C:/Users/Abhishek/Downloads/1076883.jpg"
 }
 ```
-#### Step 5
+#### Step 5 "Cloud Front".
+Creating Cloudfront distribution for S3 bucket in this step as we want to decrease the latency as much as we can through the CDN (Content Delivery Network). This in turns provide a different link to all S3 storage contents and will also help in reducing latency for the clients.
+```
+resource "aws_cloudfront_distribution" "imagecf" {
+    origin {
+        domain_name = "myuniquebucket1227.s3.amazonaws.com"
+        origin_id = "S3-myuniquebucket1227"
+
+
+        s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path
+    }
+  }
+       
+    enabled = true
+      is_ipv6_enabled     = true
+
+    default_cache_behavior {
+        allowed_methods = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+        cached_methods = ["GET", "HEAD"]
+        target_origin_id = "S3-myuniquebucket1227"
+
+
+        # Forward all query strings, cookies and headers
+        forwarded_values {
+            query_string = false
+        
+            cookies {
+               forward = "none"
+            }
+        }
+        viewer_protocol_policy = "allow-all"
+        min_ttl = 0
+        default_ttl = 10
+        max_ttl = 30
+    }
+    # Restricts who is able to access this content
+    restrictions {
+        geo_restriction {
+            # type of restriction, blacklist, whitelist or none
+            restriction_type = "none"
+        }
+    }
+
+
+    # SSL certificate for the service.
+    viewer_certificate {
+        cloudfront_default_certificate = true
+    }
+}
+```
+#### Step 6 "EFS creation".
+In this step we are creating an extra EFS (Elastic File System) volume and attaching this extra created volume to our instances so that it can be accessed by us from instance. 
+``` 
+resource “aws_efs_file_system” “efs_plus” {
+depends_on = [aws_security_group.abhitf_sg, aws_instance.AbhiOs1]
+creation_token = “efs”
+tags = {
+Name = “aniefs”
+}
+}
+resource “aws_efs_mount_target” “mount_efs” {depends_on = [aws_efs_file_system.efs_plus]
+file_system_id = aws_efs_file_system.efs_plus.id
+subnet_id = aws_instance.Aniketos.subnet_id
+security_groups=[aws_security_group.anitf_sg.id]
+}
+resource “null_resource” “cluster” {
+depends_on = [
+aws_efs_file_system.efs_plus,
+]
+connection {
+type = “ssh”
+user = “ec2-user”
+private_key = file("C:/Users/Anjali/Downloads/aniket1234.pem")
+host = aws_instance.Aniketos.public_ip
+}
+provisioner “remote-exec” {
+inline = [“sudo echo ${aws_efs_file_system.efs_plus.dns_name}:/var/www/html efs defaults._netdev 0 0>>sudo /etc/fstab”,
+“sudo mount ${aws_efs_file_system.efs_plus.dns_name}:/var/www/html/*”,
+“sudo rm -rf /var/www/html/*”,
+“sudo git clone https://github.com/abiswah/AWS_2 /var/www/html “
+   ]
+  }
+}
+```
+
+```
