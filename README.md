@@ -176,7 +176,7 @@ Name = “aniefs”
 }
 resource “aws_efs_mount_target” “mount_efs” {depends_on = [aws_efs_file_system.efs_plus]
 file_system_id = aws_efs_file_system.efs_plus.id
-subnet_id = aws_instance.Aniketos.subnet_id
+subnet_id = aws_instance.Abhios.subnet_id
 security_groups=[aws_security_group.anitf_sg.id]
 }
 resource “null_resource” “cluster” {
@@ -186,8 +186,8 @@ aws_efs_file_system.efs_plus,
 connection {
 type = “ssh”
 user = “ec2-user”
-private_key = file("C:/Users/Anjali/Downloads/aniket1234.pem")
-host = aws_instance.Aniketos.public_ip
+private_key = file("C:/Users/Abhishek/Downloads/abhi1234.pem")
+host = aws_instance.Abhios.public_ip
 }
 provisioner “remote-exec” {
 inline = [“sudo echo ${aws_efs_file_system.efs_plus.dns_name}:/var/www/html efs defaults._netdev 0 0>>sudo /etc/fstab”,
@@ -198,5 +198,12 @@ inline = [“sudo echo ${aws_efs_file_system.efs_plus.dns_name}:/var/www/html ef
   }
 }
 ```
+### Here are few screenshots of the task:-
+![alt text]()
+![alt text]()
+![alt text]()
+![alt text]()
+![alt text]()
+![alt text]()
 
-```
+## Thanks for reading.....
