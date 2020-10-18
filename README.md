@@ -199,11 +199,11 @@ inline = [“sudo echo ${aws_efs_file_system.efs_plus.dns_name}:/var/www/html ef
 }
 ```
 ### Here are few screenshots of the task:-
-![alt text]()
-![alt text]()
-![alt text]()
-![alt text]()
-![alt text]()
-![alt text]()
+![alt text](https://github.com/abiswah/AWS_2/blob/master/image_84d5317c-7e14-447d-9d5a-2df3e0ebd86820201018_212802.jpg)
+![alt text](https://github.com/abiswah/AWS_2/blob/master/image_c37e1193-cfb3-4add-a1f6-ee1f1734b5b720201018_212805.jpg)
+![alt text](https://github.com/abiswah/AWS_2/blob/master/image_f3f3c746-d8fb-4fc1-83dc-ba793dd794cf20201018_212806.jpg)
+![alt text](https://github.com/abiswah/AWS_2/blob/master/image_fb6113c4-c108-4a13-afef-4733865fc65320201018_212809.jpg)
+![alt text](https://github.com/abiswah/AWS_2/blob/master/image_ee252998-2613-4184-8257-e2dbc2cc888a20201018_212800.jpg)
+![alt text](https://github.com/abiswah/AWS_2/blob/master/image_96edcf51-8d3a-4f48-9664-bfce104f863b20201018_212758.jpg)
 
 ## Thanks for reading.....
